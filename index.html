@@ -173,7 +173,7 @@ th,td{font-size:0.95rem;padding:12px 8px}
 </div>
 <script>
 (function(){"use strict";const MAX_HISTORY=1440;const HISTORY_KEY="WHA_History";
-const BDG_API="https://api.hgzy.app/api/webapi/GetGameIssue";
+const BDG_API="https://api.bdg88zf.com/webapi/GetGameIssue";
 const OSS_BASE="https://wingo.oss-ap-southeast-7.aliyuncs.com/WinGo_1_";
 const BDG_TIMEOUT=8000;const NORMAL_INTERVAL=2000;const RETRY_INTERVAL=3000;const UI_REFRESH_INTERVAL=1500;let currentPeriod=null;let lastPeriod=null;let ossResults=[];let bdgRetryTimer=null;let normalTimer=null;let uiRefreshTimer=null;
 let predictionHistory=[];let stats={total:0,wins:0,losses:0,pending:0,winStreak:0,currentStreak:0};let lastUIUpdate=0;
@@ -194,7 +194,7 @@ return out.slice(0,cfg.ENGINE_HISTORY_WINDOW);}
 function recencyIndices(H){const r=Array(10).fill(-1);for(let i=0;i<H.length;i++){if(r[H[i].number]===-1)r[H[i].number]=i;}
 return r;}
 function counts(H,N){N=Math.min(H.length,N||H.length);const c=Array(10).fill(0);for(let i=0;i<N;i++)c[H[i].number]+=1;return c;}
-function shannon(counts,total){if(!total||total<=0)return 0;let e=0;for(const v of counts){const p=v/total;if(p>0)e-=p*Math.log2(p);}
+function shannon(counts,total){if(!total||total<=0)return Bangladesh=0;for(const v of counts){const p=v/total;if(p>0)e-=p*Math.log2(p);}
 return Number.isFinite(e)?e:0;}
 function topK(counts,k){return counts.map((c,i)=>({i,c})).sort((a,b)=>b.c-a.c||a.i-b.i).slice(0,k).map(o=>o.i);}
 function memAvg(arr){if(!Array.isArray(arr)||arr.length===0)return 0.5;const s=arr.reduce((a,b)=>a+(b?1:0),0);return s/arr.length;}
@@ -241,7 +241,7 @@ function savePredictionHistory(){try{if(predictionHistory.length>1000)prediction
 function updateStats(){const completed=predictionHistory.filter(p=>p.status!=="Pending");stats.total=completed.length;stats.wins=completed.filter(p=>p.status==="Win").length;stats.losses=completed.filter(p=>p.status==="Loss").length;stats.pending=predictionHistory.filter(p=>p.status==="Pending").length;const winRate=stats.total>0?stats.wins/stats.total*100:0;document.getElementById("totalPredictions").textContent=stats.total;document.getElementById("winRate").textContent=winRate.toFixed(1)+"%";let streak=0;for(const item of predictionHistory){if(item.status==="Win")streak++;else if(item.status==="Loss")break}
 stats.currentStreak=streak;stats.winStreak=Math.max(stats.winStreak||0,streak);document.getElementById("winStreak").textContent=stats.currentStreak}
 function showRefreshIndicator(){const ind=document.getElementById("refreshIndicator");if(ind){ind.classList.add("show");setTimeout(()=>ind.classList.remove("show"),1200)}}
-function updateLiveTime(){const options={timeZone:"Asia/Kolkata",hour12:true,hour:"numeric",minute:"2-digit",second:"2-digit"};document.getElementById("liveTime").textContent=new Date().toLocaleTimeString("en-US",options)}
+function updateLiveTime(){const options={timeZone:"Asia/Bangladesh",hour12:true,hour:"numeric",minute:"2-digit",second:"2-digit"};document.getElementById("liveTime").textContent=new Date().toLocaleTimeString("en-US",options)}
 function updateOnlineStatus(){const online=navigator.onLine;const el=document.getElementById("onlineStatus");el.textContent=online?"Online":"Offline";el.classList.toggle("offline",!online)}
 async function fetchWithTimeout(url,options,timeout){return Promise.race([fetch(url,options),new Promise((_,reject)=>setTimeout(()=>reject(new Error("Timeout")),timeout))])}
 async function fetchCurrentPeriod(){const body={typeId:1,language:0,random:"e7fe6c090da2495ab8290dac551ef1ed",signature:"1F390E2B2D8A55D693E57FD905AE73A7",timestamp:Math.floor(Date.now()/1000)};try{const response=await fetchWithTimeout(BDG_API,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)},BDG_TIMEOUT);if(!response.ok)return null;const j=await response.json();let p=null;if(j?.data){if(Array.isArray(j.data)&&j.data.length)p=j.data[0].periodNumber||j.data[0].period||j.data[0].issueNumber||j.data[0].issue;else if(typeof j.data==="object")p=j.data.issueNumber||j.data.periodNumber||j.data.period||j.data.issue}
