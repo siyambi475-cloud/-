@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অ্যাক্সেস কী ভেরিফিকেশন</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>লগইন করুন</h2>
+    <input type="password" id="passwordInput" placeholder="অ্যাক্সেস পাসওয়ার্ড দিন">
+    <button onclick="checkAccess()">প্রবেশ করুন</button>
+    <div id="message" class="error-message"></div>
+</div>
+
+<script>
+    function checkAccess() {
+        // --- আপনার পাসওয়ার্ড এবং এক্সপায়ারি ডেট এখানে সেট করুন ---
+        const correctPassword = "123@@@###rv"; // আপনার পাসওয়ার্ড এখানে লিখুন
+        const expiryDateString = "2026-12-31"; // মেয়াদ শেষ হওয়ার তারিখ (YYYY-MM-DD ফরম্যাটে)
+        // ----------------------------------------------------
+
+        const userInput = document.getElementById("passwordInput").value;
+        const messageDiv = document.getElementById("message");
+        
+        const currentDate = new Date();
+        const expiryDate = new Date(expiryDateString);
+
+        // ১. প্রথমে চেক করবে লিঙ্কটির মেয়াদ শেষ হয়ে গেছে কি না
+        if (currentDate > expiryDate) {
+            messageDiv.innerText = "দুঃখিত, এই লিঙ্কের মেয়াদ শেষ হয়ে গেছে!";
+            messageDiv.style.display = "block";
+            return;
+        }
+
+        // ২. পাসওয়ার্ড সঠিক কি না চেক করবে
+        if (userInput === correctPassword) {
+            messageDiv.style.display = "none";
+            // পাসওয়ার্ড মিললে index.html পেজে নিয়ে যাবে
+            window.location.href = "index.html"; 
+        } else {
+            messageDiv.innerText = "ভুল পাসওয়ার্ড! আবার চেষ্টা করুন।";
+            messageDiv.style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>
